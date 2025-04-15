@@ -1,42 +1,56 @@
 #include <stdio.h>
-//batalha naval
-#define TAMANHO_TABULEIRO 10
-#define TAMANHO_NAVIO 3
+
+#define TAM 10
+#define TAM_NAVIO 3
+
+
+int podePosicionar(int tabuleiro[TAM][TAM], int linha, int coluna, int direcao, int diagonal) {
+    for (int i = 0; i < TAM_NAVIO; i++) {
+        int l = linha + (direcao == 1 ? i : 0) + (diagonal == 1 ? i : 0) - (diagonal == 2 ? i : 0);
+        int c = coluna + (direcao == 2 ? i : 0) + (diagonal == 1 ? i : 0) + (diagonal == 2 ? -i : 0);
+
+        if (l < 0 || l >= TAM || c < 0 || c >= TAM || tabuleiro[l][c] == 3) {
+            return 0; 
+        }
+    }
+    return 1;
+}
+
+void posicionarNavio(int tabuleiro[TAM][TAM], int linha, int coluna, int direcao, int diagonal) {
+    for (int i = 0; i < TAM_NAVIO; i++) {
+        int l = linha + (direcao == 1 ? i : 0) + (diagonal == 1 ? i : 0) - (diagonal == 2 ? i : 0);
+        int c = coluna + (direcao == 2 ? i : 0) + (diagonal == 1 ? i : 0) + (diagonal == 2 ? -i : 0);
+
+        tabuleiro[l][c] = 3;
+    }
+}
 
 int main() {
-    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO] = {0};
-    int navio_horizontal[TAMANHO_NAVIO] = {3, 3, 3};
-    int navio_vertical[TAMANHO_NAVIO] = {3, 3, 3};
+    int tabuleiro[TAM][TAM] = {0}; 
 
-    int linha_horizontal = 2;
-    int coluna_horizontal = 4;
-
-    int linha_vertical = 5;
-    int coluna_vertical = 1;
-
-    if (coluna_horizontal + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linha_horizontal][coluna_horizontal + i] == 0) {
-                tabuleiro[linha_horizontal][coluna_horizontal + i] = navio_horizontal[i];
-            }
-        }
-    } else {
-        printf("Erro: navio na horizontal passou do limite.\n");
+    int linha1 = 0, coluna1 = 0;
+    if (podePosicionar(tabuleiro, linha1, coluna1, 2, 0)) {
+        posicionarNavio(tabuleiro, linha1, coluna1, 2, 0);
     }
 
-    if (linha_vertical + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linha_vertical + i][coluna_vertical] == 0) {
-                tabuleiro[linha_vertical + i][coluna_vertical] = navio_vertical[i];
-            }
-        }
-    } else {
-        printf("Erro: navio na vertical passou do limite.\n");
+    int linha2 = 0, coluna2 = 5;
+    if (podePosicionar(tabuleiro, linha2, coluna2, 1, 0)) {
+        posicionarNavio(tabuleiro, linha2, coluna2, 1, 0);
     }
 
-    printf("\n--- Tabuleiro Batalha Naval ---\n");
-    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
+    int linha3 = 3, coluna3 = 3;
+    if (podePosicionar(tabuleiro, linha3, coluna3, 0, 1)) {
+        posicionarNavio(tabuleiro, linha3, coluna3, 0, 1);
+    }
+
+    int linha4 = 5, coluna4 = 7;
+    if (podePosicionar(tabuleiro, linha4, coluna4, 0, 2)) {
+        posicionarNavio(tabuleiro, linha4, coluna4, 0, 2);
+    }
+
+    printf("Tabuleiro de Batalha Naval (3 = navio, 0 = água):\n\n");
+    for (int i = 0; i < TAM; i++) {
+        for (int j = 0; j < TAM; j++) {
             if (tabuleiro[i][j] == 3) {
                 printf("(3) ");
             } else {
