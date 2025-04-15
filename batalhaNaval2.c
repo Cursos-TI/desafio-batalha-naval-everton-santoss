@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+//batalha naval
 #define TAMANHO_TABULEIRO 10
 #define TAMANHO_NAVIO 3
 
